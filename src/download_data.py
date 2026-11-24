@@ -13,6 +13,8 @@ from __future__ import annotations
 import sys
 import urllib.request
 
+import pandas as pd
+
 from src.config import DATA_RAW, RAW_FILES
 
 MIRROR = "https://huggingface.co/datasets/bulutttt/olist-raw-data/resolve/main/"
@@ -45,16 +47,17 @@ def main(force: bool = False) -> None:
             print(f"FAILED: {exc}")
             sys.exit(1)
 
-    print("\nverifying row counts ...")
+    print("\nverifying record counts ...")
     ok = True
     for name, filename in RAW_FILES.items():
-        with open(DATA_RAW / filename, encoding="utf-8") as f:
-            rows = sum(1 for _ in f) - 1
+        # NOTE: count CSV *records*, not physical lines - the reviews file has
+        # newlines inside quoted comment text, so a naive line count over-counts.
+        rows = len(pd.read_csv(DATA_RAW / filename, low_memory=False))
         expected = EXPECTED_ROWS[name]
         flag = "ok " if rows == expected else "!! "
         if rows != expected:
             ok = False
-        print(f"  {flag}{filename:45s} {rows:>9,} rows (expected {expected:,})")
+        print(f"  {flag}{filename:45s} {rows:>9,} records (expected {expected:,})")
     print("\nall files match the reference dataset" if ok else "\nrow counts differ - check the download")
 
 
