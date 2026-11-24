@@ -72,36 +72,81 @@ programme for a base that buys once.
 
 ---
 
-## Quickstart (fresh machine / teammate setup)
+## Getting started
 
-Requirement: **Python 3.10+** installed ([python.org](https://www.python.org/downloads/) — tick "Add to PATH" during install).
+**Who needs what:**
+
+| You want to... | What you need | Where to start |
+|---|---|---|
+| **Just view the results** (dashboard, charts, notebook, report, deck) | Nothing — no Python, no installs | Option A below |
+| **Re-run the analysis** (regenerate every number/chart from the raw data) | Python 3.10+ | Option B below |
+| **Change the code / contribute** | Python 3.10+ + this setup | Option B, then edit `src/` |
+
+---
+
+### Option A — Only viewing the results (zero setup)
+
+Everything in `reports/` is a finished deliverable and opens directly:
+
+* **Interactive dashboard** → double-click `START_DASHBOARD.bat` (or open
+  `dashboard/olist_dashboard.html` in any browser — it is a single self-contained
+  file, works offline, no server needed)
+* **Report** → open `reports/Olist_Report.docx`
+* **Presentation** → open `reports/Olist_Presentation.pptx`
+* **Executed notebook** (with all 16 charts embedded) → open
+  `notebooks/01_olist_analysis.ipynb` in Jupyter or [VS Code](https://code.visualstudio.com/)
+* **Every SQL result as CSV** → `reports/sql_results/`
+
+---
+
+### Option B — Running the full analysis yourself
+
+One-time setup, ~5 minutes:
+
+1. **Install Python 3.10 or newer** — [python.org/downloads](https://www.python.org/downloads/)
+   (on Windows, tick **"Add Python to PATH"** during installation)
+2. **Clone this repository**:
+   ```bash
+   git clone https://github.com/shiva-garg-77/olist-ecommerce-analysis.git
+   cd olist-ecommerce-analysis
+   ```
+3. **Install the dependencies** (2–3 min):
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+Then run everything with **one double-click**:
+
+* **Windows** → double-click **`RUN_PIPELINE.bat`**.
+  It automatically downloads the 9 dataset CSVs (~121 MB, only if `data/raw/` is
+  empty), cleans the data, runs all 13 SQL queries, generates the 12 charts +
+  RFM/cohort/Pareto analysis, rebuilds the dashboard and opens it in your browser.
+  Total time ≈ 4 minutes.
+
+* **Mac / Linux / terminal** (same steps, explicit):
+  ```bash
+  python -m src.download_data        # dataset download + row-count verification
+  python -m src.etl                  # clean + master table + SQLite warehouse
+  python -m src.sql_analysis         # 13 SQL queries -> reports/sql_results/
+  python -m src.analysis             # EDA figures + RFM + cohort + Pareto
+  python -m dashboard.build_dashboard # interactive HTML dashboard
+  ```
+
+Other launchers:
+
+| File | What it does |
+|---|---|
+| `START_DASHBOARD.bat` | Opens the already-built dashboard instantly (no computation) |
+| `START_NOTEBOOK.bat` | Starts Jupyter and opens the analysis notebook |
+| `RUN_PIPELINE.bat` | Full pipeline: download (if needed) → clean → SQL → analysis → dashboard |
+
+Optional extras (only if you want to regenerate the written deliverables):
 
 ```bash
-# 1. clone
-git clone https://github.com/shiva-garg-77/olist-ecommerce-analysis.git
-cd olist-ecommerce-analysis
-
-# 2. dependencies (2-3 min)
-pip install -r requirements.txt
-
-# 3. download the 9 dataset CSVs (~121 MB, verifies row counts automatically)
-python -m src.download_data
-
-# 4. run the full pipeline (2 min)
-python -m src.etl && python -m src.sql_analysis && python -m src.analysis
-python -m dashboard.build_dashboard
+python -m powerbi.build_extracts     # star-schema CSVs for the Power BI pack
+python -m scripts.build_report       # REPORT.md + Olist_Report.docx
+python -m scripts.build_pptx         # Olist_Presentation.pptx
 ```
-
-Windows shortcut after cloning: **double-click `RUN_PIPELINE.bat`** — it runs steps 3→4 in order
-and opens the dashboard in the browser when done.
-
-Then open:
-* `dashboard/olist_dashboard.html` — the interactive dashboard (works offline, no server)
-* `notebooks/01_olist_analysis.ipynb` — the full story, cell by cell
-* `reports/Olist_Presentation.pptx` — the deck
-* `reports/REPORT.md` — the written report
-
-Runtime: ~4 minutes total on a laptop (geolocation is the only heavy table).
 
 
 ---
