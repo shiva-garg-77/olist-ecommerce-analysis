@@ -74,6 +74,16 @@ programme for a base that buys once.
 
 ## Quickstart
 
+**Easiest way — double-click launchers (Windows):**
+
+| File | Kya karta hai |
+|---|---|
+| `RUN_PIPELINE.bat` | Saara pipeline chalata hai (clean → SQL → analysis → dashboard) aur last mein dashboard khud browser mein khol deta hai |
+| `START_DASHBOARD.bat` | Sirf dashboard turant browser mein khol deta hai |
+| `START_NOTEBOOK.bat` | Jupyter notebook start karta hai |
+
+**Command line se (har OS pe):**
+
 ```bash
 # 1. dependencies
 pip install -r requirements.txt
