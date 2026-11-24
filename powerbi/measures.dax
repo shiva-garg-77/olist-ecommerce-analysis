@@ -1,0 +1,167 @@
+// ============================================================================
+//  Olist E-commerce — Power BI DAX measures
+//  Model: powerbi/data/*.csv  (see powerbi/README.md for the relationships)
+//
+//  fact_sales  : one row per delivered order
+//  fact_items  : one row per order item
+//  dim_customers / dim_products / dim_sellers / dim_date
+// ============================================================================
+
+
+// ---------------------------------------------------------------------------
+// Page 1 — Core KPIs
+// ---------------------------------------------------------------------------
+Total Revenue = SUM ( fact_sales[order_revenue] )
+
+Items Revenue = SUM ( fact_sales[items_revenue] )
+
+Total Orders = DISTINCTCOUNT ( fact_sales[order_id] )
+
+Avg Order Value = DIVIDE ( [Total Revenue], [Total Orders] )
+
+Total Customers = DISTINCTCOUNT ( fact_sales[customer_unique_id] )
+
+Items Sold = SUM ( fact_sales[n_items] )
+
+Items per Order = DIVIDE ( [Items Sold], [Total Orders] )
+
+Revenue per Customer = DIVIDE ( [Total Revenue], [Total Customers] )
+
+// Revenue growth, month over month (put on a line chart with dim_date[month_key])
+Revenue PM =
+VAR CurrentMonth = [Total Revenue]
+VAR PrevMonth =
+    CALCULATE ( [Total Revenue], DATEADD ( dim_date[date], -1, MONTH ) )
+RETURN DIVIDE ( CurrentMonth - PrevMonth, PrevMonth )
+
+Revenue YTD = TOTALYTD ( [Total Revenue], dim_date[date] )
+
+Running Revenue =
+CALCULATE ( [Total Revenue], FILTER ( ALLSELECTED ( dim_date[date] ),
+    dim_date[date] <= MAX ( dim_date[date] ) ) )
+
+Revenue 3M Moving Avg =
+AVERAGEX (
+    DATESINPERIOD ( dim_date[date], MAX ( dim_date[date] ), -3, MONTH ),
+    [Total Revenue]
+)
+
+
+// ---------------------------------------------------------------------------
+// Satisfaction & delivery
+// ---------------------------------------------------------------------------
+Avg Review Score = AVERAGE ( fact_sales[review_score] )
+
+% 5-Star Reviews = DIVIDE (
+    CALCULATE ( COUNTROWS ( fact_sales ), fact_sales[review_score] = 5 ),
+    CALCULATE ( COUNTROWS ( fact_sales ), NOT ISBLANK ( fact_sales[review_score] ) )
+)
+
+% 1-2 Star Reviews = DIVIDE (
+    CALCULATE ( COUNTROWS ( fact_sales ), fact_sales[review_score] <= 2 ),
+    CALCULATE ( COUNTROWS ( fact_sales ), NOT ISBLANK ( fact_sales[review_score] ) )
+)
+
+Late Orders = CALCULATE ( [Total Orders], fact_sales[is_late] = 1 )
+
+% Late Deliveries = DIVIDE ( [Late Orders], [Total Orders] )
+
+Avg Delivery Days = AVERAGE ( fact_sales[delivery_days] )
+
+Avg Promised Days = AVERAGE ( fact_sales[estimated_days] )
+
+Delivery Promise Gap = [Avg Delivery Days] - [Avg Promised Days]
+
+Avg Review when Late =
+CALCULATE ( [Avg Review Score], fact_sales[is_late] = 1 )
+
+Avg Review when On Time =
+CALCULATE ( [Avg Review Score], fact_sales[is_late] = 0 )
+
+
+// ---------------------------------------------------------------------------
+// Page 2 — Products & categories
+// ---------------------------------------------------------------------------
+Item Revenue = SUM ( fact_items[item_total] )
+
+Units Sold = COUNTROWS ( fact_items )
+
+Category Revenue = CALCULATE ( [Item Revenue], ALLEXCEPT ( dim_products, dim_products[category] ) )
+
+Category Rank = RANKX ( ALL ( dim_products[category] ), [Item Revenue], , DESC )
+
+Category Revenue Share % = DIVIDE ( [Item Revenue], CALCULATE ( [Item Revenue], ALL ( dim_products ) ) )
+
+// Pareto: cumulative revenue share when products are ranked by revenue
+Product Revenue Rank = RANKX ( ALL ( dim_products[product_id] ), [Item Revenue], , DESC )
+
+Cumulative Product Revenue % =
+VAR CurrentRank = [Product Revenue Rank]
+VAR RevenueUpToRank =
+    SUMX (
+        FILTER (
+            ADDCOLUMNS ( ALL ( dim_products[product_id] ), "@rev", [Item Revenue] ),
+            [Product Revenue Rank] <= CurrentRank
+        ),
+        [@rev]
+    )
+RETURN DIVIDE ( RevenueUpToRank, CALCULATE ( [Item Revenue], ALL ( dim_products ) ) )
+
+
+// ---------------------------------------------------------------------------
+// Page 3 — Customers (RFM, retention)
+// ---------------------------------------------------------------------------
+Repeat Customers =
+CALCULATE ( COUNTROWS ( dim_customers ), dim_customers[frequency] > 1 )
+
+Repeat Rate % = DIVIDE ( [Repeat Customers], COUNTROWS ( dim_customers ) )
+
+Revenue from Repeat Customers =
+CALCULATE ( SUM ( dim_customers[lifetime_revenue] ), dim_customers[frequency] > 1 )
+
+% Revenue from Repeat = DIVIDE (
+    [Revenue from Repeat Customers],
+    SUM ( dim_customers[lifetime_revenue] )
+)
+
+Customers by Segment = COUNTROWS ( dim_customers )
+
+Segment Revenue = SUM ( dim_customers[lifetime_revenue] )
+
+Segment Revenue Share % = DIVIDE (
+    [Segment Revenue], CALCULATE ( SUM ( dim_customers[lifetime_revenue] ), ALL ( dim_customers ) )
+)
+
+Revenue per Customer in Segment = DIVIDE ( [Segment Revenue], [Customers by Segment] )
+
+Champions Revenue per Customer =
+CALCULATE (
+    DIVIDE ( [Segment Revenue], [Customers by Segment] ),
+    dim_customers[segment] = "Champions"
+)
+
+Champion Value Index = DIVIDE ( [Champions Revenue per Customer], DIVIDE (
+    SUM ( dim_customers[lifetime_revenue] ), COUNTROWS ( dim_customers ) ) )
+
+
+// ---------------------------------------------------------------------------
+// Page 4 — Geography
+// ---------------------------------------------------------------------------
+State Revenue = CALCULATE ( [Total Revenue], ALLEXCEPT ( fact_sales, fact_sales[customer_state] ) )
+
+State Revenue Share % = DIVIDE ( [Total Revenue], CALCULATE ( [Total Revenue], ALL ( fact_sales ) ) )
+
+State AOV = DIVIDE ( [Total Revenue], [Total Orders] )
+
+State Late % = DIVIDE ( [Late Orders], [Total Orders] )
+
+Freight % of Revenue =
+DIVIDE ( SUM ( fact_sales[freight_value] ), [Items Revenue] )
+
+
+// ---------------------------------------------------------------------------
+// Page-scoped filter helper (date slider labels)
+// ---------------------------------------------------------------------------
+Selected Period =
+"Showing " & FORMAT ( MIN ( dim_date[date] ), "MMM yyyy" ) & " – " &
+FORMAT ( MAX ( dim_date[date] ), "MMM yyyy" )

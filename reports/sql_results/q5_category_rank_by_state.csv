@@ -1,0 +1,82 @@
+state,rnk,category,orders,revenue,share_in_state_pct
+AC,1,Sports Leisure,9,2071.54,10.58
+AC,2,Furniture Decor,7,1746.7,8.92
+AC,3,Health Beauty,6,1655.0,8.45
+AL,1,Health Beauty,62,14741.33,15.65
+AL,2,Watches Gifts,34,12650.16,13.43
+AL,3,Computers Accessories,32,8849.85,9.4
+AM,1,Health Beauty,15,3368.68,12.21
+AM,2,Computers Accessories,10,2424.21,8.79
+AM,3,Garden Tools,5,2267.8,8.22
+AP,1,Computers Accessories,6,2322.19,14.39
+AP,2,Watches Gifts,7,1846.92,11.44
+AP,3,Health Beauty,10,1719.02,10.65
+BA,1,Health Beauty,319,58620.07,9.92
+BA,2,Watches Gifts,214,50254.7,8.5
+BA,3,Sports Leisure,250,44410.84,7.51
+CE,1,Health Beauty,152,37086.16,13.92
+CE,2,Watches Gifts,127,32513.77,12.2
+CE,3,Auto,53,14246.02,5.35
+DF,1,Watches Gifts,141,35118.33,10.15
+DF,2,Health Beauty,219,34177.28,9.87
+DF,3,Computers Accessories,133,27109.57,7.83
+ES,1,Watches Gifts,142,30645.5,9.65
+ES,2,Bed Bath Table,197,26949.26,8.48
+ES,3,Sports Leisure,156,23897.31,7.52
+GO,1,Watches Gifts,138,34168.06,10.22
+GO,2,Health Beauty,206,32926.48,9.85
+GO,3,Bed Bath Table,189,27089.39,8.11
+MA,1,Health Beauty,82,15461.6,10.46
+MA,2,Computers Accessories,59,14479.93,9.8
+MA,3,Watches Gifts,56,11663.19,7.89
+MG,1,Health Beauty,990,175007.52,9.62
+MG,2,Bed Bath Table,1120,156483.1,8.6
+MG,3,Watches Gifts,601,132311.65,7.27
+MS,1,Health Beauty,57,12739.15,9.48
+MS,2,Housewares,34,12140.59,9.04
+MS,3,Computers Accessories,54,11091.59,8.25
+MT,1,Health Beauty,83,17743.33,9.79
+MT,2,Watches Gifts,59,16398.48,9.05
+MT,3,Auto,49,11719.39,6.47
+PA,1,Health Beauty,99,27534.84,12.99
+PA,2,Watches Gifts,71,23847.59,11.25
+PA,3,Sports Leisure,72,15186.41,7.16
+PB,1,Health Beauty,75,18809.85,13.65
+PB,2,Watches Gifts,41,14544.56,10.55
+PB,3,Computers Accessories,40,8823.91,6.4
+PE,1,Health Beauty,220,48797.5,15.79
+PE,2,Watches Gifts,145,35432.81,11.47
+PE,3,Sports Leisure,127,22768.36,7.37
+PI,1,Health Beauty,50,12268.93,11.66
+PI,2,Auto,27,11760.52,11.18
+PI,3,Watches Gifts,38,9043.54,8.6
+PR,1,Sports Leisure,420,66641.83,8.53
+PR,2,Watches Gifts,266,62382.6,7.98
+PR,3,Health Beauty,375,61327.48,7.85
+RJ,1,Watches Gifts,789,188264.84,9.16
+RJ,2,Bed Bath Table,1357,175647.96,8.55
+RJ,3,Health Beauty,939,159004.81,7.74
+RN,1,Health Beauty,56,16022.37,15.91
+RN,2,Watches Gifts,46,11624.73,11.54
+RN,3,Telephony,22,6063.27,6.02
+RO,1,Health Beauty,23,7967.86,13.99
+RO,2,Watches Gifts,13,4885.98,8.58
+RO,3,Sports Leisure,16,3975.11,6.98
+RR,1,Sports Leisure,6,1742.92,19.28
+RR,2,Home Appliances,3,1125.05,12.45
+RR,3,Baby,1,994.77,11.0
+RS,1,Bed Bath Table,537,72428.18,8.41
+RS,2,Furniture Decor,438,66414.12,7.71
+RS,3,Computers Accessories,386,61844.0,7.18
+SC,1,Sports Leisure,309,48776.71,8.2
+SC,2,Health Beauty,282,45482.25,7.64
+SC,3,Computers Accessories,260,42087.14,7.07
+SE,1,Health Beauty,38,9639.74,13.71
+SE,2,Cool Stuff,17,6702.78,9.54
+SE,3,Furniture Decor,19,5356.68,7.62
+SP,1,Bed Bath Table,4347,549061.89,9.52
+SP,2,Health Beauty,3715,510255.38,8.84
+SP,3,Watches Gifts,2090,448582.76,7.77
+TO,1,Sports Leisure,23,6454.31,10.76
+TO,2,Health Beauty,29,6026.33,10.04
+TO,3,Watches Gifts,26,5841.95,9.74

@@ -1,0 +1,27 @@
+# ---- data (large, regenerable) ----
+data/raw/*.csv
+data/processed/*.parquet
+data/processed/*.db
+data/processed/*.csv
+data/processed/*.json
+powerbi/data/
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ---- keep these (they are deliverables) ----
+!reports/figures/*.png
+!reports/sql_results/*.csv
+!dashboard/screenshots/*.png
+!data/processed/rfm_summary.csv

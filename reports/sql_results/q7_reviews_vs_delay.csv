@@ -1,0 +1,8 @@
+delay_bucket,reviews,avg_review_score,pct_4_or_5_star,pct_1_or_2_star,avg_delivery_days
+0 - not delivered,8,4.5,87.5,12.5,
+1 - 15+ days early,29453,4.32,83.5,9.15,9.9
+2 - early,58710,4.28,82.43,9.26,11.4
+3 - on the promised day,1280,4.03,73.67,12.42,19.2
+4 - 1-7 days late,3129,2.84,41.48,45.77,25.0
+5 - 8-15 days late,1917,1.73,12.47,78.51,33.8
+6 - 15+ days late,1335,1.72,12.51,78.35,54.5
