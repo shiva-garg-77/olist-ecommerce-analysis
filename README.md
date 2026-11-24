@@ -72,44 +72,37 @@ programme for a base that buys once.
 
 ---
 
-## Quickstart
+## Quickstart (fresh machine / teammate setup)
 
-**Easiest way — double-click launchers (Windows):**
-
-| File | Kya karta hai |
-|---|---|
-| `RUN_PIPELINE.bat` | Saara pipeline chalata hai (clean → SQL → analysis → dashboard) aur last mein dashboard khud browser mein khol deta hai |
-| `START_DASHBOARD.bat` | Sirf dashboard turant browser mein khol deta hai |
-| `START_NOTEBOOK.bat` | Jupyter notebook start karta hai |
-
-**Command line se (har OS pe):**
+Requirement: **Python 3.10+** installed ([python.org](https://www.python.org/downloads/) — tick "Add to PATH" during install).
 
 ```bash
-# 1. dependencies
+# 1. clone
+git clone https://github.com/shiva-garg-77/olist-ecommerce-analysis.git
+cd olist-ecommerce-analysis
+
+# 2. dependencies (2-3 min)
 pip install -r requirements.txt
 
-# 2. data (skip if data/raw/ already has the 9 CSVs)
+# 3. download the 9 dataset CSVs (~121 MB, verifies row counts automatically)
 python -m src.download_data
 
-# 3. pipeline
-python -m src.etl                  # clean + master table + SQLite warehouse
-python -m src.sql_analysis         # run all 13 SQL queries
-python -m src.analysis             # EDA figures + RFM + cohort + Pareto
-python -m dashboard.build_dashboard  # interactive HTML dashboard
-
-# 4. optional: Power BI extracts and the written deliverables
-python -m powerbi.build_extracts
-python -m scripts.build_report
-python -m scripts.build_pptx
+# 4. run the full pipeline (2 min)
+python -m src.etl && python -m src.sql_analysis && python -m src.analysis
+python -m dashboard.build_dashboard
 ```
 
+Windows shortcut after cloning: **double-click `RUN_PIPELINE.bat`** — it runs steps 3→4 in order
+and opens the dashboard in the browser when done.
+
 Then open:
-* `notebooks/01_olist_analysis.ipynb` — the full story, cell by cell
 * `dashboard/olist_dashboard.html` — the interactive dashboard (works offline, no server)
+* `notebooks/01_olist_analysis.ipynb` — the full story, cell by cell
 * `reports/Olist_Presentation.pptx` — the deck
 * `reports/REPORT.md` — the written report
 
-Runtime: ~2 minutes for the whole pipeline on a laptop (geolocation is the only heavy table).
+Runtime: ~4 minutes total on a laptop (geolocation is the only heavy table).
+
 
 ---
 
